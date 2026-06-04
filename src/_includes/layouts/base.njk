@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ description }}">
+    <meta name="description" content="{{ description or 'Mountain Oasis Bar & Grill — bold comfort food, strong drinks, and a laid-back mountain vibe in Buena Vista, CO.' }}">
     <meta name="keywords" content="">
     <link rel="canonical" href="{{ client.domain }}{{ page.url }}">
 
@@ -28,8 +28,10 @@
     <!-- Sitewide Stylesheets and Scripts -->
     <link rel="stylesheet" href="{{ "/assets/css/styles.css" | url }}">
 
-    <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Roboto:wght@400;700&display=swap">
 
     {% block head %}{% endblock %}
 
@@ -54,12 +56,13 @@
 
   </head>
 
-  <body>
+  <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}{% if bodyStyle %} style="{{ bodyStyle }}"{% endif %}>
     {% include "components/header.njk" %}
     <main>
       {% block content %}{% endblock %}
     </main>
-    {% include "components/footer.njk" %}
+    {% if not hideFooter %}{% include "components/footer.njk" %}{% endif %}
     <script src="{{ "/assets/js/main.js" | url }}"></script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

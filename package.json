@@ -5,6 +5,7 @@
   "scripts": {
     "build:css": "postcss src/assets/sass/styles.scss -o src/assets/css/styles.css",
     "build": "npm run build:css && eleventy",
+    "build:preview": "npm run build:css && PATH_PREFIX=/mountain-oasis/ eleventy",
     "serve": "npm run build:css && eleventy --serve",
     "watch:css": "postcss src/assets/sass/styles.scss -o src/assets/css/styles.css --watch",
     "watch": "npm-run-all --parallel watch:css serve"

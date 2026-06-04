@@ -1,0 +1,616 @@
+---
+title: "Events | Mountain Oasis Bar & Grill"
+description: "Upcoming events at Mountain Oasis Bar & Grill in Buena Vista, CO."
+---
+
+{% extends "layouts/base.njk" %}
+
+{% block head %}
+<style>
+  /* ── Shared calendar shell ───────────────────── */
+  #cal-day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-left: 2px solid #1A2260;
+    border-top: 2px solid #1A2260;
+  }
+
+  .cal-day-header {
+    border-right: 2px solid #1A2260;
+    border-bottom: 2px solid #1A2260;
+    padding: 8px 4px;
+    text-align: center;
+    background: #1A2260;
+    color: #E8A830;
+    font-family: 'Shrikhand', serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  #cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-left: 2px solid #1A2260;
+  }
+
+  /* ── Month view — day cells ──────────────────── */
+  .cal-day {
+    min-height: 90px;
+    min-width: 0;
+    padding: 4px;
+    border-right: 2px solid #1A2260;
+    border-bottom: 2px solid #1A2260;
+    background: #F2EAD5;
+    overflow: hidden;
+  }
+
+  .cal-day--empty   { background: rgba(242, 234, 213, 0.4); }
+  .cal-day--today   { background: rgba(232, 168, 48, 0.1); }
+
+  .cal-day-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1A2260;
+    margin-bottom: 3px;
+  }
+
+  .cal-day-num--today {
+    background: #E8A830;
+    border-radius: 50%;
+    font-weight: 900;
+  }
+
+  .cal-event-badge {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: #1A2260;
+    color: #E8A830;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background 100ms ease;
+  }
+
+  .cal-event-badge:hover { background: #2C3990; }
+
+  .cal-more {
+    display: block;
+    font-size: 0.58rem;
+    color: rgba(26, 34, 96, 0.45);
+    padding: 0 2px;
+  }
+
+  /* ── Week view — mobile rows ─────────────────── */
+  .week-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 6px;
+    border-bottom: 1.5px dashed rgba(26, 34, 96, 0.2);
+  }
+
+  .week-row:last-child { border-bottom: none; }
+
+  .week-row--today { background: rgba(232, 168, 48, 0.08); border-radius: 8px; }
+
+  .week-day-label {
+    flex-shrink: 0;
+    width: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .week-day-name {
+    font-family: 'Shrikhand', serif;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(26, 34, 96, 0.45);
+  }
+
+  .week-day-num {
+    font-family: 'Shrikhand', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1A2260;
+    line-height: 1;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .week-day-num--today {
+    background: #E8A830;
+    border-radius: 50%;
+  }
+
+  .week-events {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 2px;
+  }
+
+  .week-event-pill {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: #1A2260;
+    color: #E8A830;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background 100ms ease;
+  }
+
+  .week-event-pill:hover { background: #2C3990; }
+
+  .week-no-events {
+    font-size: 0.75rem;
+    color: rgba(26, 34, 96, 0.25);
+    padding-top: 4px;
+  }
+
+  /* ── Upcoming list ───────────────────────────── */
+  .upcoming-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1.5px dashed rgba(26, 34, 96, 0.2);
+  }
+
+  .upcoming-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .upcoming-date-box {
+    flex-shrink: 0;
+    width: 54px;
+    background: #1A2260;
+    border-radius: 10px;
+    padding: 6px 4px 4px;
+    text-align: center;
+    box-shadow: 3px 3px 0 #E8A830;
+  }
+
+  .upcoming-date-box .udb-day {
+    display: block;
+    font-family: 'Shrikhand', serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #E8A830;
+  }
+
+  .upcoming-date-box .udb-month {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #F2EAD5;
+    margin-top: 1px;
+  }
+
+  /* ── Mobile overrides ────────────────────────── */
+  @media (max-width: 639px) {
+    /* switch grid to single-column block for week rows */
+    #cal-grid {
+      display: block;
+      border-left: 2px solid #1A2260;
+      border-top: 2px solid #1A2260;
+    }
+
+    /* hide month-view day headers — week view labels its own days */
+    #cal-day-headers { display: none; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <section class="bg-cream min-h-screen py-16 relative overflow-hidden"
+    style="background-image: url('{{ "/assets/images/squiggle-1.png" | url }}'); background-size: cover; background-position: center; background-blend-mode: multiply;">
+
+    <div class="relative max-w-screen-xl mx-auto px-4 z-10">
+
+      <!-- Page heading -->
+      <div class="retro-card text-center max-w-screen-md mx-auto mb-10">
+        <span class="retro-badge">{{ client.name }}</span>
+        <h1 class="font-display text-5xl md:text-6xl text-pine mt-4 leading-none">Events</h1>
+        <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mt-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+
+      <!-- Calendar card -->
+      <div class="retro-card mb-10 p-4 md:p-6 overflow-hidden">
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between mb-5">
+          <button id="cal-prev" class="retro-btn-secondary !px-4 !py-2 !text-xs" aria-label="Previous">&#8592; Prev</button>
+          <h2 id="cal-title" class="font-display text-xl md:text-4xl text-pine text-center px-2"></h2>
+          <button id="cal-next" class="retro-btn-secondary !px-4 !py-2 !text-xs" aria-label="Next">Next &#8594;</button>
+        </div>
+
+        <!-- Day-of-week headers (desktop month view only) -->
+        <div id="cal-day-headers">
+          <div class="cal-day-header">Sun</div>
+          <div class="cal-day-header">Mon</div>
+          <div class="cal-day-header">Tue</div>
+          <div class="cal-day-header">Wed</div>
+          <div class="cal-day-header">Thu</div>
+          <div class="cal-day-header">Fri</div>
+          <div class="cal-day-header">Sat</div>
+        </div>
+
+        <!-- Grid / week rows filled by JS -->
+        <div id="cal-grid" aria-live="polite" aria-label="Calendar"></div>
+
+      </div>
+
+      <!-- Upcoming events -->
+      <div class="retro-card max-w-screen-md mx-auto">
+        <h2 class="font-display text-3xl text-pine mb-1">Upcoming Events</h2>
+        <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div id="upcoming-list">
+          <p class="text-bark/40 text-center py-6">Loading events…</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Event detail modal -->
+  <div id="event-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4"
+       style="background: rgba(26,34,96,0.93);">
+    <div class="retro-card max-w-lg w-full relative max-h-[88vh] overflow-y-auto">
+      <button id="modal-close" aria-label="Close"
+              class="absolute top-4 right-4 text-bark/40 hover:text-pine font-bold text-2xl leading-none transition-colors">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  'use strict';
+
+  const API_KEY = 'AIzaSyAMiGUtBuQbxu84lmCQ6e55aHqM8Ypm6eo';
+  const CAL_ID  = 'sarah.e.maples@gmail.com';
+  const MONTHS  = ['January','February','March','April','May','June',
+                   'July','August','September','October','November','December'];
+  const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  /* ── DOM refs ──────────────────────────────────────── */
+  const calTitle   = document.getElementById('cal-title');
+  const calGrid    = document.getElementById('cal-grid');
+  const prevBtn    = document.getElementById('cal-prev');
+  const nextBtn    = document.getElementById('cal-next');
+  const upcomingEl = document.getElementById('upcoming-list');
+  const modal      = document.getElementById('event-modal');
+  const modalClose = document.getElementById('modal-close');
+  const modalBody  = document.getElementById('modal-body');
+
+  /* ── State ─────────────────────────────────────────── */
+  const today   = new Date();
+  let viewYear  = today.getFullYear();
+  let viewMonth = today.getMonth();
+  let weekStart = getWeekStart(today); // mobile state
+  const cache   = {};
+
+  /* ── Breakpoint ─────────────────────────────────────── */
+  const mobileQuery = window.matchMedia('(max-width: 639px)');
+  function isMobile() { return mobileQuery.matches; }
+
+  /* ── API ────────────────────────────────────────────── */
+  async function apiFetch(tMin, tMax, max) {
+    const url = 'https://www.googleapis.com/calendar/v3/calendars/'
+      + encodeURIComponent(CAL_ID)
+      + '/events?key=' + API_KEY
+      + '&timeMin=' + encodeURIComponent(tMin)
+      + '&timeMax=' + encodeURIComponent(tMax)
+      + '&singleEvents=true&orderBy=startTime&maxResults=' + (max || 100);
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return (data.items || []).filter(ev => ev.status !== 'cancelled');
+  }
+
+  async function fetchMonth(year, month) {
+    const key = year + '-' + month;
+    if (cache[key]) return cache[key];
+    const tMin = new Date(year, month, 1).toISOString();
+    const tMax = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
+    try   { cache[key] = await apiFetch(tMin, tMax); }
+    catch { cache[key] = []; }
+    return cache[key];
+  }
+
+  async function fetchUpcoming() {
+    const tMin = new Date().toISOString();
+    const tMax = new Date(Date.now() + 90 * 864e5).toISOString();
+    try   { return await apiFetch(tMin, tMax, 20); }
+    catch { return []; }
+  }
+
+  /* ── Helpers ────────────────────────────────────────── */
+  function getWeekStart(date) {
+    const d = new Date(date);
+    d.setDate(d.getDate() - d.getDay());
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  function startDate(ev) {
+    return ev.start.dateTime
+      ? new Date(ev.start.dateTime)
+      : new Date(ev.start.date + 'T00:00:00');
+  }
+
+  function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear()
+        && a.getMonth()    === b.getMonth()
+        && a.getDate()     === b.getDate();
+  }
+
+  function timeLabel(ev) {
+    if (!ev.start.dateTime) return 'All day';
+    return new Date(ev.start.dateTime)
+      .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  function fullDateLabel(ev) {
+    const d    = startDate(ev);
+    const date = d.toLocaleDateString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+    });
+    if (!ev.start.dateTime) return date + ' · All day';
+    const s = new Date(ev.start.dateTime)
+      .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const e = ev.end && ev.end.dateTime
+      ? ' – ' + new Date(ev.end.dateTime)
+          .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+      : '';
+    return date + ' · ' + s + e;
+  }
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function weekTitle(start) {
+    const end = new Date(start);
+    end.setDate(end.getDate() + 6);
+    const sm = MONTHS[start.getMonth()].slice(0, 3);
+    const em = MONTHS[end.getMonth()].slice(0, 3);
+    if (start.getMonth() === end.getMonth()) {
+      return sm + ' ' + start.getDate() + ' – ' + end.getDate() + ', ' + end.getFullYear();
+    }
+    return sm + ' ' + start.getDate() + ' – ' + em + ' ' + end.getDate() + ', ' + end.getFullYear();
+  }
+
+  /* ── Modal ──────────────────────────────────────────── */
+  function openModal(ev) {
+    const desc = (ev.description || '').replace(/\n/g, '<br>');
+    modalBody.innerHTML = `
+      <div class="mb-3"><span class="retro-badge">${esc(timeLabel(ev))}</span></div>
+      <h3 class="font-display text-3xl text-pine leading-tight mb-2">${esc(ev.summary || 'Untitled Event')}</h3>
+      <p class="font-bold text-gold mb-4">${esc(fullDateLabel(ev))}</p>
+      ${ev.location ? `<p class="text-bark/70 mb-3">📍 ${esc(ev.location)}</p>` : ''}
+      ${desc ? `<div class="border-t-2 border-dashed border-bark/20 pt-4 mt-2 text-bark/80 leading-relaxed">${desc}</div>` : ''}
+    `;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Month view (desktop) ───────────────────────────── */
+  function renderMonth(events) {
+    calTitle.textContent = MONTHS[viewMonth] + ' ' + viewYear;
+
+    const firstDay    = new Date(viewYear, viewMonth, 1).getDay();
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const isNow       = today.getFullYear() === viewYear && today.getMonth() === viewMonth;
+
+    const byDay = {};
+    events.forEach(ev => {
+      const d = startDate(ev);
+      if (d.getFullYear() === viewYear && d.getMonth() === viewMonth) {
+        (byDay[d.getDate()] = byDay[d.getDate()] || []).push(ev);
+      }
+    });
+
+    const cells = [];
+    const MAX   = 2;
+
+    for (let i = 0; i < firstDay; i++) {
+      cells.push('<div class="cal-day cal-day--empty"></div>');
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const isToday = isNow && today.getDate() === d;
+      const dayEvs  = byDay[d] || [];
+      let inner = `<span class="cal-day-num${isToday ? ' cal-day-num--today' : ''}">${d}</span>`;
+      dayEvs.slice(0, MAX).forEach(ev => {
+        inner += `<button class="cal-event-badge" data-ev="${events.indexOf(ev)}">${esc(ev.summary || 'Event')}</button>`;
+      });
+      if (dayEvs.length > MAX) {
+        inner += `<span class="cal-more">+${dayEvs.length - MAX} more</span>`;
+      }
+      cells.push(`<div class="cal-day${isToday ? ' cal-day--today' : ''}">${inner}</div>`);
+    }
+
+    const trail = (firstDay + daysInMonth) % 7;
+    for (let i = 0; i < (trail ? 7 - trail : 0); i++) {
+      cells.push('<div class="cal-day cal-day--empty"></div>');
+    }
+
+    calGrid.innerHTML = cells.join('');
+    calGrid.querySelectorAll('.cal-event-badge').forEach(btn => {
+      btn.addEventListener('click', () => openModal(events[+btn.dataset.ev]));
+    });
+  }
+
+  /* ── Week view (mobile) ─────────────────────────────── */
+  function renderWeek(events) {
+    calTitle.textContent = weekTitle(weekStart);
+
+    const rows = [];
+    for (let i = 0; i < 7; i++) {
+      const d      = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      const isToday = sameDay(d, today);
+      const dayEvs  = events.filter(ev => sameDay(startDate(ev), d));
+
+      let evHtml = dayEvs.length
+        ? dayEvs.map(ev =>
+            `<button class="week-event-pill" data-ev="${events.indexOf(ev)}">${esc(ev.summary || 'Event')}</button>`
+          ).join('')
+        : '<span class="week-no-events">No events</span>';
+
+      rows.push(`
+        <div class="week-row${isToday ? ' week-row--today' : ''}">
+          <div class="week-day-label">
+            <span class="week-day-name">${DAY_NAMES[d.getDay()]}</span>
+            <span class="week-day-num${isToday ? ' week-day-num--today' : ''}">${d.getDate()}</span>
+          </div>
+          <div class="week-events">${evHtml}</div>
+        </div>
+      `);
+    }
+
+    calGrid.innerHTML = rows.join('');
+    calGrid.querySelectorAll('.week-event-pill').forEach(btn => {
+      btn.addEventListener('click', () => openModal(events[+btn.dataset.ev]));
+    });
+  }
+
+  /* ── Loaders ────────────────────────────────────────── */
+  function showLoading() {
+    calGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0" class="font-display text-xl text-bark/40">Loading…</div>';
+  }
+
+  async function loadMonth() {
+    showLoading();
+    const events = await fetchMonth(viewYear, viewMonth);
+    renderMonth(events);
+  }
+
+  async function loadWeek() {
+    showLoading();
+    const wEnd = new Date(weekStart);
+    wEnd.setDate(wEnd.getDate() + 6);
+
+    // Fetch month(s) — week can span two months
+    const p = [fetchMonth(weekStart.getFullYear(), weekStart.getMonth())];
+    if (wEnd.getMonth() !== weekStart.getMonth()) {
+      p.push(fetchMonth(wEnd.getFullYear(), wEnd.getMonth()));
+    }
+    const results = await Promise.all(p);
+    renderWeek(results.flat());
+  }
+
+  function load() {
+    isMobile() ? loadWeek() : loadMonth();
+  }
+
+  /* ── Upcoming ───────────────────────────────────────── */
+  function renderUpcoming(events) {
+    if (!events.length) {
+      upcomingEl.innerHTML = `<p class="text-bark/50 text-center py-8 font-display text-xl">No upcoming events yet — check back soon!</p>`;
+      return;
+    }
+    upcomingEl.innerHTML = events.map((ev, i) => {
+      const d = startDate(ev);
+      return `
+        <div class="upcoming-item">
+          <div class="upcoming-date-box">
+            <span class="udb-day">${d.getDate()}</span>
+            <span class="udb-month">${MONTHS[d.getMonth()].slice(0, 3)}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-pine leading-snug">${esc(ev.summary || 'Untitled Event')}</p>
+            <p class="text-sm text-gold font-bold">${esc(timeLabel(ev))}</p>
+            ${ev.location ? `<p class="text-xs text-bark/60 truncate mt-0.5">📍 ${esc(ev.location)}</p>` : ''}
+          </div>
+          <button class="retro-badge cursor-pointer shrink-0" data-up="${i}">Details</button>
+        </div>`;
+    }).join('');
+
+    upcomingEl.querySelectorAll('[data-up]').forEach(btn => {
+      btn.addEventListener('click', () => openModal(events[+btn.dataset.up]));
+    });
+  }
+
+  /* ── Navigation ─────────────────────────────────────── */
+  prevBtn.addEventListener('click', () => {
+    if (isMobile()) {
+      weekStart.setDate(weekStart.getDate() - 7);
+      loadWeek();
+    } else {
+      if (--viewMonth < 0) { viewMonth = 11; viewYear--; }
+      loadMonth();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (isMobile()) {
+      weekStart.setDate(weekStart.getDate() + 7);
+      loadWeek();
+    } else {
+      if (++viewMonth > 11) { viewMonth = 0; viewYear++; }
+      loadMonth();
+    }
+  });
+
+  /* ── Responsive switch ──────────────────────────────── */
+  mobileQuery.addEventListener('change', load);
+
+  /* ── Modal controls ─────────────────────────────────── */
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  /* ── Boot ───────────────────────────────────────────── */
+  load();
+  fetchUpcoming().then(renderUpcoming);
+})();
+</script>
+{% endblock %}

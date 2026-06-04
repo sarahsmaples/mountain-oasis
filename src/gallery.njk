@@ -1,0 +1,155 @@
+---
+title: "Gallery | Mountain Oasis Bar & Grill"
+description: "Photos from Mountain Oasis Bar & Grill in Buena Vista, CO."
+---
+
+{% extends "layouts/base.njk" %}
+
+{% block content %}
+  <section class="bg-cream min-h-screen py-16 relative overflow-hidden"
+    style="background-image: url('{{ "/assets/images/squiggle-1.png" | url }}'); background-size: cover; background-position: center; background-blend-mode: multiply;">
+
+    <div class="relative max-w-screen-xl mx-auto px-4 z-10">
+
+      <!-- Heading -->
+      <div class="retro-card text-center max-w-screen-md mx-auto mb-10">
+        <span class="retro-badge">{{ client.name }}</span>
+        <h1 class="font-display text-5xl md:text-6xl text-pine mt-4 leading-none">Gallery</h1>
+        <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mt-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+
+      <!-- Photo grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g1.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g2.png" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g3.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g4.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g5.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g6.png" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g7.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g8.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g9.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g10.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+        <div class="retro-card p-0 overflow-hidden aspect-square min-w-0 cursor-pointer gallery-item">
+          <img src="{{ "/assets/images/gallery/g11.jpg" | url }}" alt="Mountain Oasis Bar &amp; Grill" class="w-full h-full object-cover">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background: rgba(26,34,96,0.95);">
+
+    <!-- Close -->
+    <button id="lb-close" aria-label="Close" class="absolute top-4 right-4 text-cream font-bold text-3xl leading-none w-10 h-10 flex items-center justify-center hover:text-gold transition-colors">&times;</button>
+
+    <!-- Prev -->
+    <button id="lb-prev" aria-label="Previous photo" class="absolute left-3 md:left-8 text-cream hover:text-gold transition-colors">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+
+    <!-- Image -->
+    <img id="lb-img" src="" alt="" class="max-h-[85vh] max-w-[80vw] md:max-w-[75vw] object-contain rounded-xl" style="box-shadow: 6px 6px 0 #E8A830;">
+
+    <!-- Next -->
+    <button id="lb-next" aria-label="Next photo" class="absolute right-3 md:right-8 text-cream hover:text-gold transition-colors">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- Counter -->
+    <div id="lb-counter" class="absolute bottom-5 left-1/2 -translate-x-1/2 font-display text-gold text-lg tracking-wide"></div>
+
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    const items   = Array.from(document.querySelectorAll('.gallery-item'));
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
+    const lbClose = document.getElementById('lb-close');
+    const lbPrev  = document.getElementById('lb-prev');
+    const lbNext  = document.getElementById('lb-next');
+    const lbCount = document.getElementById('lb-counter');
+    let current   = 0;
+
+    const sources = items.map(el => {
+      const img = el.querySelector('img');
+      return { src: img.src, alt: img.alt };
+    });
+
+    function open(index) {
+      current = (index + sources.length) % sources.length;
+      lbImg.src = sources[current].src;
+      lbImg.alt = sources[current].alt;
+      lbCount.textContent = (current + 1) + ' / ' + sources.length;
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach((el, i) => el.addEventListener('click', () => open(i)));
+    lbClose.addEventListener('click', close);
+    lbPrev.addEventListener('click', () => open(current - 1));
+    lbNext.addEventListener('click', () => open(current + 1));
+
+    // Close on backdrop click (not on image/buttons)
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (lb.classList.contains('hidden')) return;
+      if (e.key === 'Escape')      close();
+      if (e.key === 'ArrowLeft')   open(current - 1);
+      if (e.key === 'ArrowRight')  open(current + 1);
+    });
+
+    // Touch swipe
+    let touchStartX = 0;
+    lb.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      const delta = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 50) delta < 0 ? open(current + 1) : open(current - 1);
+    });
+  })();
+</script>
+{% endblock %}

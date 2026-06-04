@@ -1,34 +1,72 @@
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="{{ "/" | url }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{ client.name }}</span>
-    </a>
-    <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-      <span class="sr-only">Open main menu</span>
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-      </svg>
-    </button>
-    <div class="hidden w-full md:flex md:w-auto md:items-center" id="navbar-default">
-      <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:items-center md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <a href="{{ "/" | url }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500">Home</a>
-        </li>
-        <li>
-          <a href="{{ "/charter/" | url }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500">Private Charter</a>
-        </li>
-        <li>
-          <a href="{{ "/gift-cards/" | url }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500">Gift Cards</a>
-        </li>
-        <li>
-          <a href="{{ "/employment/" | url }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500">Employment</a>
-        </li>
-        <li>
-          <a href="https://book.{{ client.bookingDomain }}.com/{{ client.rgPath }}/reservations/calendar" target="_blank" rel="noopener noreferrer" class="block py-2 px-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:ml-4 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Buy Tickets
+<header class="sticky top-7 z-50 relative">
+
+  <!-- Pill bar -->
+  <div class="bg-pine border-4 border-bark rounded-full mx-4">
+    <div class="max-w-screen-xl mx-auto px-8 py-3">
+
+      <!-- Desktop: 3-column grid -->
+      <div class="hidden md:grid grid-cols-3 items-center gap-4">
+
+        <!-- Left nav -->
+        <nav class="flex items-center gap-6">
+          <a href="{{ "/menu/" | url }}"       class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Menu</a>
+          {# <a href="{{ "/gift-cards/" | url }}" class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Gift Cards</a> #}
+          <a href="{{ "/" | url }}#contact"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Contact</a>
+          <a href="{{ "/gallery/" | url }}"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Gallery</a>
+          <a href="{{ "/events/" | url }}"     class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Events</a>
+          <a href="{{ "/careers/" | url }}"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Jobs</a>
+        </nav>
+
+        <!-- Empty center — logo is absolutely positioned -->
+        <div></div>
+
+        <!-- Right CTA -->
+        <div class="flex justify-end">
+          <a href="https://88restaurants.com/{{ client.eightyEightPath }}/online_orders/new"
+             target="_blank" rel="noopener noreferrer"
+             class="retro-btn-gold text-sm">
+            Order Online
           </a>
-        </li>
-      </ul>
+        </div>
+
+      </div>
+
+      <!-- Mobile: hamburger only (logo is absolutely positioned like desktop) -->
+      <div class="flex md:hidden items-center justify-end">
+        <button id="mobile-menu-btn" class="text-cream p-1 relative z-30" aria-label="Open menu">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
     </div>
   </div>
-</nav>
+
+  <!-- Desktop logo — vertically centered on the pill, overflows on load -->
+  <a href="{{ "/" | url }}" class="hidden md:block absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20">
+    <img id="header-logo" src="{{ "/assets/images/logo.png" | url }}" alt="{{ client.name }}" class="header-logo w-auto">
+  </a>
+
+  <!-- Mobile logo — same overflow behaviour, hidden on md+ -->
+  <a href="{{ "/" | url }}" class="md:hidden absolute left-8 top-1/2 -translate-y-1/2 z-20">
+    <img id="mobile-header-logo" src="{{ "/assets/images/logo.png" | url }}" alt="{{ client.name }}" class="mobile-header-logo w-auto">
+  </a>
+
+  <!-- Mobile dropdown — floats below the pill -->
+  <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-2 bg-pine border-4 border-bark rounded-2xl z-50">
+    <nav class="px-6 py-5 flex flex-col gap-5">
+      <a href="{{ "/menu/" | url }}"       class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Menu</a>
+      <a href="{{ "/" | url }}#contact"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Contact</a>
+      <a href="{{ "/gallery/" | url }}"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Gallery</a>
+      <a href="{{ "/events/" | url }}"     class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Events</a>
+      <a href="{{ "/careers/" | url }}"    class="text-cream font-bold text-sm tracking-widest uppercase hover:text-gold transition-colors">Jobs</a>
+      <a href="https://88restaurants.com/{{ client.eightyEightPath }}/online_orders/new"
+         target="_blank" rel="noopener noreferrer"
+         class="retro-btn-gold self-start">
+        Order Online
+      </a>
+    </nav>
+  </div>
+
+</header>

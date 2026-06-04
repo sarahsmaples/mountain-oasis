@@ -1,53 +1,308 @@
 ---
-title: Home
+title: "Mountain Oasis Bar & Grill | Buena Vista, CO"
+description: "Mountain Oasis Bar & Grill in Buena Vista, CO — bold comfort food, strong drinks, and a laid-back mountain vibe. Burgers, beef-tallow fries, margaritas, happy hour, and more."
 ---
 
 {% extends "layouts/base.njk" %}
 
 {% block head %}
   <script src="https://reservationgenie.com/{{ client.rgPath }}/popup.js"></script>
+  <script id="marketing-popup-script" data-restaurant-id="1157" src="https://88restaurants.com/uploads/popup.js"></script>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch(
+          "https://88restaurants.com/restaurants/1157/online_orders/discount_button"
+        );
+        const html = await response.text();
+        document.body.insertAdjacentHTML("beforeend", html);
+      } catch (error) {
+        console.error("Error fetching button:", error);
+      }
+    });
+  </script>
 {% endblock %}
 
 {% block content %}
-  <section class="bg-white dark:bg-gray-900">
-    <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-      <div class="mr-auto place-self-center lg:col-span-7">
-        <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">Payments tool for software companies</h1>
-        <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">From checkout to global sales tax compliance, companies around the world use Flowbite to simplify their payment stack.</p>
-        <a href="#" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
-                Get started
-                <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </a>
-        <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                Speak to Sales
+
+  <!-- Hero -->
+  <section class="bg-cream relative overflow-hidden">
+    <!-- Halftone corner decorations -->
+    <div class="absolute top-0 right-0 w-72 h-72 halftone-dots opacity-10 rounded-full translate-x-24 -translate-y-24 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 halftone-dots opacity-10 rounded-full -translate-x-24 translate-y-24 pointer-events-none"></div>
+
+    <div class="relative max-w-screen-xl mx-auto px-4 py-10 md:py-20">
+      <!-- Mobile heading — above slider, hidden at md+ -->
+      <div class="md:hidden text-center mb-6">
+        <h1 class="font-display text-bark leading-none mb-3">
+          <span class="block text-4xl">Mountain Oasis</span>
+          <span class="block text-2xl">Bar &amp; Grill</span>
+        </h1>
+        <p class="font-display text-xl text-gold">Come Hungry, Stay Awhile.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+
+        <!-- Text — md and above -->
+        <div class="hidden md:flex flex-col justify-center">
+          <h1 class="font-display text-bark mb-4 leading-none">
+            <span class="block text-5xl xl:text-6xl">Mountain Oasis</span>
+            <span class="block text-3xl xl:text-4xl">Bar &amp; Grill</span>
+          </h1>
+          <p class="font-display text-2xl xl:text-3xl text-gold mb-8">Come Hungry, Stay Awhile.</p>
+          <p class="text-bark/70 text-lg xl:text-xl max-w-md mb-10">
+            Bold comfort food, strong drinks, and a laid-back mountain vibe — your spot to kick back and refuel in the heart of the Rockies.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="{{ "/menu/" | url }}" class="retro-btn-primary">View Menu</a>
+            <a href="https://88restaurants.com/{{ client.eightyEightPath }}/online_orders/new" target="_blank" rel="noopener noreferrer" class="retro-btn-secondary">Order Online</a>
+          </div>
+        </div>
+
+        <!-- Slider -->
+        <div class="hero-slider h-[300px] md:h-[460px]">
+          <div class="hero-slide">
+            <img src="{{ "/assets/images/pinwheel.png" | url }}" class="hero-pinwheel" alt="" aria-hidden="true">
+            <img src="{{ "/assets/images/burger-2.png" | url }}" alt="Burger and onion rings" class="sticker">
+          </div>
+          <div class="hero-slide">
+            <img src="{{ "/assets/images/pinwheel.png" | url }}" class="hero-pinwheel" alt="" aria-hidden="true">
+            <img src="{{ "/assets/images/wings-2.png" | url }}" alt="Chicken wings" class="sticker">
+          </div>
+          <div class="hero-slide">
+            <img src="{{ "/assets/images/pinwheel.png" | url }}" class="hero-pinwheel" alt="" aria-hidden="true">
+            <img src="{{ "/assets/images/grilled-cheese-2.png" | url }}" alt="Grilled cheese and fries" class="sticker">
+          </div>
+          <div class="hero-slide">
+            <img src="{{ "/assets/images/blt.png" | url }}" alt="BLT sandwich" class="sticker">
+            <img src="{{ "/assets/images/pinwheel.png" | url }}" class="hero-pinwheel" alt="" aria-hidden="true">
+          </div>
+          <div class="hero-slide">
+            <img src="{{ "/assets/images/pinwheel.png" | url }}" class="hero-pinwheel" alt="" aria-hidden="true">
+            <img src="{{ "/assets/images/tacos.png" | url }}" alt="Tacos" class="sticker">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Mobile CTAs — below slider, hidden at md+ -->
+      <div class="md:hidden flex flex-wrap justify-center gap-4 mt-6 pb-2">
+        <a href="{{ "/menu/" | url }}" class="retro-btn-primary">View Menu</a>
+        <a href="https://88restaurants.com/{{ client.eightyEightPath }}/online_orders/new" target="_blank" rel="noopener noreferrer" class="retro-btn-secondary">Order Online</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Tagline bar -->
+  <div class="bg-pine border-y-4 border-bark">
+    <p class="max-w-screen-xl mx-auto px-4 py-4 text-center font-display text-gold tracking-wide text-[clamp(14px,4vw,2.5rem)] lg:text-[2.5rem] lg:whitespace-nowrap">
+      <span class="block lg:inline">When you're feelin' low,</span>
+      <span class="block lg:inline"> you'll find friends in high places.</span>
+    </p>
+  </div>
+
+  <!-- About + Order Now (shared squiggle background) -->
+  <section id="about" class="bg-cream relative overflow-hidden"
+    style="background-image: url('{{ "/assets/images/squiggle-2.png" | url }}'); background-size: cover; background-position: center; background-blend-mode: multiply;">
+
+    <!-- About -->
+    <div class="py-20">
+      <div class="relative max-w-3xl mx-auto px-4 z-10">
+
+        <!-- Stamp pinned to top-left corner of the card -->
+        <div class="hidden md:block stamp-wrap absolute -left-2 top-10 -translate-x-1/2 -translate-y-1/2 z-20 -rotate-12 pointer-events-none">
+          <img src="{{ "/assets/images/stamp-1.png" | url }}" class="stamp-img spin-cw" alt="">
+          <span class="stamp-text">Locally Owned &amp; Operated</span>
+        </div>
+
+        <div class="retro-card text-center">
+          <div class="font-display text-5xl md:text-7xl text-pine leading-tight mb-8">
+            <span class="block">Fuel Up.</span>
+            <span class="block">Wind Down.</span>
+            <span class="block">Stay Awhile.</span>
+          </div>
+          <h2 class="text-2xl font-bold text-pine mb-4">Welcome to Mountain Oasis Bar &amp; Grill</h2>
+          <div class="text-bark/80 text-lg space-y-5 text-left">
+            <p>Bold comfort food, strong drinks, and a laid-back mountain vibe—this is your spot to kick back and refuel. From juicy burgers and stacked sandwiches to crispy, beef-tallow fries, we keep it simple, satisfying, and done right.</p>
+            <p>Behind the bar, you'll find ice-cold beer, easy wines, and margaritas worth coming back for—classic, frozen, and everything in between. With daily specials, happy hour, and a welcoming crowd, there's always something going on.</p>
+            <p>Whether you're a local, a traveler, or just passing through, come as you are and stay awhile.</p>
+          </div>
+          <p class="font-display text-4xl text-pine mt-12">This is your Oasis.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Now -->
+    <div class="pb-20">
+      <div class="max-w-screen-xl mx-auto px-4">
+        <div class="grid lg:grid-cols-2 gap-8 items-center">
+
+          <!-- Left: photo -->
+          <div class="retro-card overflow-hidden p-0 h-[340px] lg:h-auto lg:min-h-[340px]">
+            <img src="{{ "/assets/images/cheers.jpg" | url }}" alt="Guests cheering with margaritas at Mountain Oasis" class="w-full h-full object-cover">
+          </div>
+
+          <!-- Right: copy -->
+          <div>
+            <h2 class="font-display text-5xl md:text-6xl text-pine leading-none mb-6">Fastest To Go Orders in the West</h2>
+            <p class="text-bark/80 text-lg mb-4">Skip the line and order ahead online — your food will be hot, your drinks will be cold, and it'll all be waiting the moment you roll up. Easy, fast, and done right.</p>
+            <p class="font-display text-2xl text-gold mb-8">And yeah, we have a drive-thru.</p>
+            <a href="https://88restaurants.com/{{ client.eightyEightPath }}/online_orders/new" target="_blank" rel="noopener noreferrer" class="retro-btn-gold">Order Online Now</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Menus -->
+  <section class="bg-pine py-20 relative overflow-hidden">
+    <div class="absolute inset-0 halftone-dots-light opacity-5 pointer-events-none"></div>
+
+    <div class="relative max-w-screen-md mx-auto px-4 z-10">
+
+      <div class="text-center mb-12">
+        <h2 class="font-display text-5xl md:text-6xl text-cream leading-none">The Heart<br>of the Oasis</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Food Menu -->
+        <div class="retro-card aspect-square flex flex-col min-w-0" style="box-shadow: 6px 6px 0 #E8A830;">
+          <div class="flex-grow flex items-center justify-center p-4">
+            <img src="{{ "/assets/images/food-thumbnail.png" | url }}" alt="Food Menu" class="w-full max-h-full object-contain sticker">
+          </div>
+          <div class="text-center px-4 pb-6">
+            <h3 class="font-display text-3xl text-pine mb-4">Food Menu</h3>
+            <a href="{{ "/food-menu/" | url }}" class="retro-btn-gold">View Food Menu</a>
+          </div>
+        </div>
+
+        <!-- Bar Menu -->
+        <div class="retro-card aspect-square flex flex-col relative min-w-0" style="box-shadow: 6px 6px 0 #E8A830;">
+          <div class="hidden md:block stamp-wrap absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 z-20 rotate-6 pointer-events-none">
+            <img src="{{ "/assets/images/stamp-2.png" | url }}" class="stamp-img spin-ccw" alt="">
+            <span class="stamp-text">Cheapest Drinks in Town</span>
+          </div>
+          <div class="flex-grow flex items-center justify-center p-4">
+            <img src="{{ "/assets/images/bar-thumbnail.png" | url }}" alt="Bar Menu" class="w-full max-h-full object-contain sticker">
+          </div>
+          <div class="text-center px-4 pb-6">
+            <h3 class="font-display text-3xl text-pine mb-4">Bar Menu</h3>
+            <a href="{{ "/bar-menu/" | url }}" class="retro-btn-gold">View Bar Menu</a>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="text-cream/70 mt-10 text-xl max-w-xl mx-auto text-center">No frills, no fuss — just damn good food, cold drinks, and a place that feels like home. At Mountain Oasis, we're here for the locals, the travelers, and everyone in between. Come hungry, bring your crew, and stay awhile.</p>
+
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="bg-cream py-16"
+    style="background-image: url('{{ "/assets/images/squiggle-1.png" | url }}'); background-size: cover; background-position: center; background-blend-mode: multiply;">
+    <div class="max-w-screen-xl mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-8 items-stretch">
+
+        <!-- Left: Contact form -->
+        <div class="retro-card flex flex-col">
+          <h2 class="retro-card-title">
+            Get in Touch
+            <svg class="w-5 h-5 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/></svg>
+          </h2>
+          <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <iframe src="https://88restaurants.com/{{ client.eightyEightPath }}/contact_forms" frameborder="0" width="100%" height="545" scrolling="no"></iframe>
+        </div>
+
+        <!-- Right: Info cards 2x2 grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+
+          <!-- Hours -->
+          <div class="retro-card h-full">
+            <h3 class="retro-card-title">
+              Hours
+              <svg class="w-5 h-5 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/></svg>
+            </h3>
+            <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <ul class="space-y-4">
+              {% for entry in client.hours %}
+              <li class="flex items-center gap-4">
+                <div class="retro-icon-circle">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2zm0 2a8 8 0 100 16A8 8 0 0012 4zm1 3v6l4 2-1 2-5-2.5V7h2z"/></svg>
+                </div>
+                <div>
+                  <span class="font-bold text-pine block">{{ entry.days }}</span>
+                  <span class="text-bark/70">{{ entry.time }}</span>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Contact info -->
+          <div class="retro-card h-full">
+            <h3 class="retro-card-title">
+              Contact
+              <svg class="w-5 h-5 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/></svg>
+            </h3>
+            <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <div class="space-y-4">
+              <a href="tel:{{ client.phone }}" class="flex items-center gap-4 group">
+                <div class="retro-icon-circle">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                </div>
+                <span class="text-pine font-bold group-hover:text-gold transition-colors">{{ client.phone }}</span>
+              </a>
+              <hr class="border-dashed border-bark/20">
+              <a href="mailto:{{ client.email }}" class="flex items-center gap-4 group">
+                <div class="retro-icon-circle">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </div>
+                <span class="text-pine font-bold group-hover:text-gold transition-colors">{{ client.email }}</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="retro-card h-full">
+            <h3 class="retro-card-title">
+              Find Us
+              <svg class="w-5 h-5 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/></svg>
+            </h3>
+            <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <a href="{{ client.address.googlePlacesUrl }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group">
+              <div class="retro-icon-circle">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              </div>
+              <div>
+                <span class="text-pine font-bold group-hover:text-gold transition-colors block">{{ client.address.street }}</span>
+                <span class="text-bark/70">{{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}</span>
+              </div>
             </a>
-      </div>
-      <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-        <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png" alt="mockup">
+          </div>
+
+          <!-- Follow Along -->
+          <div class="retro-card h-full">
+            <h3 class="retro-card-title">
+              Follow Along
+              <svg class="w-5 h-5 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z"/></svg>
+            </h3>
+            <svg viewBox="0 0 300 12" preserveAspectRatio="none" class="w-full h-3 mb-5 text-navy"><path d="M0,6 C25,0 50,12 75,6 C100,0 125,12 150,6 C175,0 200,12 225,6 C250,0 275,12 300,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <a href="{{ client.socialMedia.facebook }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group">
+              <div class="retro-icon-circle font-bold text-lg">f</div>
+              <span class="text-pine font-bold group-hover:text-gold transition-colors">Facebook</span>
+            </a>
+          </div>
+
+        </div>
       </div>
     </div>
-  </section>
-
-  <section class="bg-white dark:bg-gray-900">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-      <img class="w-full dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg" alt="dashboard image">
-      <img class="w-full hidden dark:block" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg" alt="dashboard image">
-      <div class="mt-4 md:mt-0">
-        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Let's create more tools and ideas that brings us together.</h2>
-        <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Flowbite helps you connect with friends and communities of people who share your interests. Connecting with your friends and family as well as discovering new ones is easy with features like Groups.</p>
-        <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
-                Get started
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <iframe src="https://reservationgenie.com/{{ client.rgPath }}/contact_form" width="100%" height="610" frameborder="0" style="border: none;"></iframe>
   </section>
 {% endblock %}
