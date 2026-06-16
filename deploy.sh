@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Cleaning dist..."
+rm -rf dist
+
 echo "Building site..."
 npm run build
 
