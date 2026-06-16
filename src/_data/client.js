@@ -17,7 +17,7 @@ module.exports = {
   socialMedia: {
     facebook: "https://www.facebook.com/mtoasisbar",
   },
-  domain: "https://mtoasisbar.com",
+  domain: "https://www.mtoasisbar.com",
   bookingDomain: "mtoasisbar",
   eightyEightPath: "mountain-oasis-buena-vista-co",
 };
