@@ -9,15 +9,15 @@ module.exports = {
   },
   phone: "719-293-4712",
   hours: [
-    { days: "Mon – Thu", time: "10 AM – 9 PM" },
-    { days: "Fri – Sat", time: "10 AM – 12 AM" },
+    { days: "Mon – Thu", time: "11 AM – 9 PM" },
+    { days: "Fri – Sat", time: "11 AM – 12 AM" },
     { days: "Sun",       time: "12 – 7 PM" }
   ],
   email: "mtoasisbar@gmail.com",
   socialMedia: {
     facebook: "https://www.facebook.com/mtoasisbar",
   },
-  domain: "https://mtoasisbar.com/",
+  domain: "https://mtoasisbar.com",
   bookingDomain: "mtoasisbar",
   eightyEightPath: "mountain-oasis-buena-vista-co",
 };
