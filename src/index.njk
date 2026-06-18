@@ -105,8 +105,10 @@ description: "Mountain Oasis Bar & Grill in Buena Vista, CO — bold comfort foo
   </div>
 
   <!-- About + Order Now (shared squiggle background) -->
-  <section id="about" class="bg-cream relative overflow-hidden"
-    style="background-image: url('{{ "/assets/images/squiggle-2.webp" | url }}'); background-size: cover; background-position: center; background-blend-mode: multiply;">
+  <section id="about" class="bg-cream relative overflow-hidden">
+    <img src="{{ "/assets/images/squiggle-2.webp" | url }}" alt="" fetchpriority="high"
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+      style="mix-blend-mode: multiply;">
 
     <!-- About -->
     <div class="py-20">
@@ -136,13 +138,13 @@ description: "Mountain Oasis Bar & Grill in Buena Vista, CO — bold comfort foo
     </div>
 
     <!-- Order Now -->
-    <div class="pb-20">
+    <div class="relative z-10 pb-20">
       <div class="max-w-screen-xl mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-8 items-center">
 
           <!-- Left: photo -->
           <div class="retro-card overflow-hidden p-0 h-[340px] lg:h-auto lg:min-h-[340px]">
-            <img src="{{ "/assets/images/cheers.webp" | url }}" alt="Guests cheering with margaritas at Mountain Oasis" class="w-full h-full object-cover">
+            <img src="{{ "/assets/images/cheers.webp" | url }}" alt="Guests cheering with margaritas at Mountain Oasis" class="w-full h-full object-cover" fetchpriority="high">
           </div>
 
           <!-- Right: copy -->

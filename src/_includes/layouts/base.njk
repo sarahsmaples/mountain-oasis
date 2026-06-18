@@ -109,7 +109,7 @@
       {% block content %}{% endblock %}
     </main>
     {% if not hideFooter %}{% include "components/footer.njk" %}{% endif %}
-    <script src="{{ "/assets/js/main.js" | url }}"></script>
+    <script defer src="{{ "/assets/js/main.js" | url }}"></script>
     {% block scripts %}{% endblock %}
   </body>
 </html>
